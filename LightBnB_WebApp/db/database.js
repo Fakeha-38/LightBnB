@@ -104,7 +104,6 @@ const getAllReservations = function (guest_id, limit = 10) {
     console.log(err.message);
     return Promise.reject(err);
   })
-  // return getAllProperties(null, 2);
 };
 
 /// Properties
@@ -162,12 +161,6 @@ const getAllProperties = (options, limit = 10) => {
    ORDER BY cost_per_night
   LIMIT $${queryParams.length};
   `;
-
-  // console.log(queryString, queryParams);
-
-  //////////////////////////////////////////////////////////
-  // PROMISE RETURN
-  //////////////////////////////////////////////////////////
   return pool
     .query(queryString, queryParams)
     .then((res) => res.rows)
@@ -191,7 +184,7 @@ const addProperty = function (property) {
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING *;`, [property.owner_id, property.title, property.description, property.thumbnail_photo_url, property.cover_photo_url, property.cost_per_night, property.street, property.city, property.province, property.post_code, property.country, property.parking_spaces, property.number_of_bathrooms, property.number_of_bedrooms])
     .then((result) => {
-      return result.rows;
+      return result.rows[0];
     })
     .catch((err) => {
       console.log(err.message);
